@@ -96,13 +96,22 @@ module Maxipago
               end
               xml.transactionDetail {
                 xml.payType {
-                  xml.creditCard {
-                    xml.number self.options[:number]
-                    xml.expMonth self.options[:exp_month]
-                    xml.expYear self.options[:exp_year]
-                    xml.cvvNumber self.options[:cvv_number] unless self.options[:cvv_number].nil?
-                    xml.eCommInd "eci"
-                  }
+                  unless self.options[:number].nil?
+                    xml.creditCard {
+                      xml.number self.options[:number]
+                      xml.expMonth self.options[:exp_month]
+                      xml.expYear self.options[:exp_year]
+                      xml.cvvNumber self.options[:cvv_number] unless self.options[:cvv_number].nil?
+                      xml.eCommInd "eci"
+                    }
+                  end
+                  unless self.options[:token].nil?
+                    xml.onFile {
+                      xml.customerId self.options[:customerId]
+                      xml.token self.options[:token]
+                      xml.cvvNumber self.options[:cvv_number] unless self.options[:cvv_number].nil?
+                    }
+                  end
                 }
               }
               xml.payment {
